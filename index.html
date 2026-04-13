@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Muhsin Shah — AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #0B0B0B;
+  --surface: #141414;
+  --surface-2: #1C1C1C;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(200,169,110,0.4);
+  --text: #F0EDE8;
+  --text-2: #A8A49E;
+  --text-faint: #5A5650;
+  --gold: #C8A96E;
+  --gold-soft: rgba(200,169,110,0.12);
+  --teal: #5ECFBE;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── GRID LINE ── */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+  z-index: 10;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 0;
+  background: rgba(11,11,11,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+nav .inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-name span { color: var(--gold); font-style: italic; }
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-2);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+
+/* ── HERO ── */
+.hero {
+  padding: 160px 0 100px;
+  position: relative;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 0.1s;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 8vw, 96px);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.2s;
+}
+
+.hero-name em {
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 300;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3vw, 32px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-2);
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.hero-desc {
+  max-width: 520px;
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.4s;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.5s;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: #0B0B0B;
+}
+
+.btn-primary:hover {
+  background: #D9BA7E;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  transform: translateY(-1px);
+}
+
+/* status dot */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.65s;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4ADE80;
+  box-shadow: 0 0 8px #4ADE80;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── SECTION ── */
+section {
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── PROJECTS ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  animation: fadeUp 0.6s ease forwards;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.project-card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.project-card:hover::before { opacity: 1; }
+
+.project-card.featured {
+  grid-column: span 2;
+  flex-direction: row;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+@media (max-width: 720px) {
+  .project-card.featured { grid-column: span 1; flex-direction: column; }
+}
+
+.card-badge {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+
+.badge-live {
+  background: rgba(94,207,190,0.15);
+  color: var(--teal);
+  border: 1px solid rgba(94,207,190,0.3);
+}
+
+.badge-saas {
+  background: var(--gold-soft);
+  color: var(--gold);
+  border: 1px solid rgba(200,169,110,0.3);
+}
+
+.badge-agent {
+  background: rgba(147,112,219,0.12);
+  color: #A78BFA;
+  border: 1px solid rgba(147,112,219,0.25);
+}
+
+.badge-ml {
+  background: rgba(239,68,68,0.1);
+  color: #F87171;
+  border: 1px solid rgba(239,68,68,0.2);
+}
+
+.card-content { flex: 1; display: flex; flex-direction: column; }
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 13.5px;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+
+.card-links {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.card-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.card-link:hover { color: var(--gold); }
+
+.card-link svg { width: 12px; height: 12px; }
+
+.card-link.live-link { color: var(--teal); }
+.card-link.live-link:hover { color: #7DDFD3; }
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.skill-group {
+  background: var(--surface);
+  padding: 24px;
+}
+
+.skill-group-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 3px 9px;
+}
+
+/* ── CONTACT ── */
+.contact-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.contact-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.contact-text h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.contact-text p {
+  color: var(--text-2);
+  font-size: 14px;
+  max-width: 380px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-item:hover { color: var(--gold); }
+
+.contact-icon {
+  width: 32px; height: 32px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-icon svg { width: 14px; height: 14px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+}
+
+footer .inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-copy {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.footer-loc {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.project-card:nth-child(1) { animation-delay: 0.1s; }
+.project-card:nth-child(2) { animation-delay: 0.2s; }
+.project-card:nth-child(3) { animation-delay: 0.3s; }
+.project-card:nth-child(4) { animation-delay: 0.4s; }
+.project-card:nth-child(5) { animation-delay: 0.5s; }
+.project-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface-2); border-radius: 2px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 120px 0 60px; }
+  section { padding: 64px 0; }
+  .contact-inner { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a href="#" class="nav-name">Muhsin <em>Shah</em></a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://github.com/thecoloredsnowman-stack" target="_blank">GitHub ↗</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-eyebrow">AI Engineer</div>
+    <h1 class="hero-name">Muhsin<br><em>Shah</em></h1>
+    <div class="hero-title">Building AI systems that ship.</div>
+    <p class="hero-desc">
+      I build production AI — agentic systems, LLM pipelines, and real-world integrations.
+      Founder of eight.ai. Based in Cyberjaya, Malaysia.
+      Open to AI Engineering roles in KL, Selangor, or Remote.
+    </p>
+    <div class="hero-actions">
+      <a href="https://github.com/thecoloredsnowman-stack" target="_blank" class="btn btn-primary">
+        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+      <a href="mailto:muhsinshah1995@gmail.com" class="btn btn-outline">
+        Get in touch →
+      </a>
+    </div>
+    <div class="status">
+      <span class="status-dot"></span>
+      Available for hire — Immediate start
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">Selected Projects</div>
+    <div class="projects-grid">
+
+      <!-- eight.ai -->
+      <div class="project-card featured">
+        <div class="card-content">
+          <span class="card-badge badge-saas">Commercial SaaS · 2026</span>
+          <div class="card-title">eight.ai — WhatsApp AI Platform</div>
+          <p class="card-desc">
+            Founded and built a multi-tenant WhatsApp AI SaaS where Claude API drafts contextual replies
+            based on a per-client knowledge base. Clients approve, edit, or reject before sending.
+            Integrated Meta WhatsApp Cloud API directly as a Business Solution Provider with Embedded Signup —
+            each client connects their own WhatsApp Business Account. Per-client WABA isolation, coexistence mode,
+            Cloudflare Workers deployment, SSM-registered business entity.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Meta Cloud API</span>
+            <span class="tag">Claude API</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Cloudflare Workers</span>
+            <span class="tag">Webhooks</span>
+            <span class="tag">Multi-tenant</span>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/thecoloredsnowman-stack/eight-ai" target="_blank" class="card-link">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+            <a href="https://thecoloredsnowman-stack.github.io/eight-ai/" target="_blank" class="card-link live-link">
+              ↗ Live Demo
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- River -->
+      <div class="project-card">
+        <span class="card-badge badge-live">Live · 2025–Present</span>
+        <div class="card-content">
+          <div class="card-title">River — AI Companion</div>
+          <p class="card-desc">
+            Full-stack AI companion web app with agentic tool-calling architecture. Autonomous reasoning loop
+            across up to 5 tool calls per request. Semantic memory via pgvector and OpenAI embeddings.
+            Three interaction modes with room-specific personality switching.
+          </p>
+          <div class="card-tags">
+            <span class="tag">Next.js 16</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">pgvector</span>
+            <span class="tag">DeepSeek</span>
+            <span class="tag">OpenAI</span>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/thecoloredsnowman-stack/river-app" target="_blank" class="card-link">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+            <a href="https://river-app-seven.vercel.app" target="_blank" class="card-link live-link">
+              ↗ Live App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restaurant Agent -->
+      <div class="project-card">
+        <span class="card-badge badge-agent">Agentic · 2026</span>
+        <div class="card-content">
+          <div class="card-title">Restaurant Operations Agent</div>
+          <p class="card-desc">
+            Desktop AI agent for a local F&B business. 3-phase agent loop (Plan → Execute → Review),
+            12 tools via function-calling schema, skill-based architecture with 11 domain files.
+            Handles accounting, inventory, payroll, and WhatsApp auto-replies.
+          </p>
+          <div class="card-tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">WebSocket</span>
+            <span class="tag">DeepSeek</span>
+            <span class="tag">pywebview</span>
+            <span class="tag">Python</span>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/thecoloredsnowman-stack/cyborg-agent" target="_blank" class="card-link">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agentic RAG -->
+      <div class="project-card">
+        <span class="card-badge badge-ml">RAG · 2026</span>
+        <div class="card-content">
+          <div class="card-title">Agentic RAG System</div>
+          <p class="card-desc">
+            RAG system with an autonomous agent loop — the LLM decides when to retrieve, refine queries,
+            and synthesize answers with citations. FAISS vector search, OpenAI embeddings,
+            Gradio UI with reasoning visibility. 23 automated tests.
+          </p>
+          <div class="card-tags">
+            <span class="tag">FAISS</span>
+            <span class="tag">OpenAI</span>
+            <span class="tag">LangChain</span>
+            <span class="tag">Gradio</span>
+            <span class="tag">Python</span>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/thecoloredsnowman-stack/agentic-rag" target="_blank" class="card-link">
+              <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mia -->
+      <div class="project-card">
+        <span class="card-badge badge-agent">Autonomous · 2025</span>
+        <div class="card-content">
+          <div class="card-title">Mia — Telegram AI Agent</div>
+          <p class="card-desc">
+            Autonomous AI personal assistant on n8n with LangChain agent architecture and 15+ modular
+            tool workflows. Self-hosted Docker, Supabase backend, persistent memory, task management,
+            and urgency-based reminder scheduling.
+          </p>
+          <div class="card-tags">
+            <span class="tag">n8n</span>
+            <span class="tag">LangChain</span>
+            <span class="tag">Gemini</span>
+            <span class="tag">Supabase</span>
+            <span class="tag">Docker</span>
+          </div>
+          <div class="card-links">
+            <span class="card-link" style="opacity:0.4; cursor:default;">Self-hosted — private deployment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Pipeline -->
+      <div class="project-card">
+        <span class="card-badge badge-agent">Pipeline · 2025</span>
+        <div class="card-content">
+          <div class="card-title">AI Video Content Pipeline</div>
+          <p class="card-desc">
+            End-to-end automated content pipeline using 3 LangChain AI agents. Idea generation →
+            script writing → VEO 3 video rendering → metadata logging → TikTok publishing.
+            Async polling, structured output parsing, Google Sheets integration.
+          </p>
+          <div class="card-tags">
+            <span class="tag">LangChain</span>
+            <span class="tag">VEO 3</span>
+            <span class="tag">Gemini</span>
+            <span class="tag">n8n</span>
+            <span class="tag">TikTok API</span>
+          </div>
+          <div class="card-links">
+            <span class="card-link" style="opacity:0.4; cursor:default;">Internal pipeline</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-label">AI / ML</div>
+        <div class="skill-list">
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">OpenAI API</span>
+          <span class="skill-tag">Claude API</span>
+          <span class="skill-tag">DeepSeek</span>
+          <span class="skill-tag">Gemini</span>
+          <span class="skill-tag">RAG</span>
+          <span class="skill-tag">pgvector</span>
+          <span class="skill-tag">FAISS</span>
+          <span class="skill-tag">Embeddings</span>
+          <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Backend / Infra</div>
+        <div class="skill-list">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">Node.js</span>
+          <span class="skill-tag">WebSocket</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">Supabase</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">n8n</span>
+          <span class="skill-tag">Cloudflare Workers</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Frontend</div>
+        <div class="skill-list">
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">Next.js</span>
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">HTML/CSS</span>
+          <span class="skill-tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">APIs & Integration</div>
+        <div class="skill-list">
+          <span class="skill-tag">Meta WhatsApp API</span>
+          <span class="skill-tag">Webhooks</span>
+          <span class="skill-tag">REST APIs</span>
+          <span class="skill-tag">Telegram Bot</span>
+          <span class="skill-tag">VEO 3</span>
+          <span class="skill-tag">Google Sheets</span>
+          <span class="skill-tag">TikTok API</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <div class="contact-inner">
+      <div class="contact-text">
+        <h2>Let's build<br><em>something real.</em></h2>
+        <p>Open to AI Engineering, ML Engineering, and AI Automation roles in KL, Selangor, or Remote. Immediate availability.</p>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:muhsinshah1995@gmail.com" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="14" height="10" rx="1.5"/><path d="M1 4l7 5 7-5"/></svg>
+          </div>
+          muhsinshah1995@gmail.com
+        </a>
+        <a href="https://github.com/thecoloredsnowman-stack" target="_blank" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          </div>
+          github.com/thecoloredsnowman-stack
+        </a>
+        <a href="tel:01123247702" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1h3l1.5 3.5-1.75 1.75a9 9 0 004 4L11.5 8.5 15 10v3a1 1 0 01-1 1C6.163 14 2 9.837 2 5a1 1 0 011-1z"/></svg>
+          </div>
+          011-23247702
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="inner">
+    <span class="footer-copy">© 2026 Muhsin Shah</span>
+    <span class="footer-loc">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="8" cy="7" r="3"/><path d="M8 1a6 6 0 016 6c0 4-6 8-6 8S2 11 2 7a6 6 0 016-6z"/></svg>
+      Cyberjaya, Malaysia
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
